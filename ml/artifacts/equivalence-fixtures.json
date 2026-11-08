@@ -1,0 +1,346 @@
+{
+ "version": "triage-text-v1",
+ "classes": [
+  "high",
+  "low",
+  "medium"
+ ],
+ "cases": [
+  {
+   "text": "paciente refiere dolor de estomago insoportable, ademas no se calma con nada y desde la madrugada y pide ayuda",
+   "probabilities": [
+    0.93084254,
+    0.01713473,
+    0.05202273
+   ]
+  },
+  {
+   "text": "consulta porque estornudos, ademas un poco de tos seca, no ha tomado nada",
+   "probabilities": [
+    0.02682698,
+    0.94793965,
+    0.02523338
+   ]
+  },
+  {
+   "text": "Agrieras, ademas despues de comer",
+   "probabilities": [
+    0.05215405,
+    0.81605258,
+    0.13179337
+   ]
+  },
+  {
+   "text": "paciente refiere solicita certificado medico, ademas para la familia, no ha tomado nada",
+   "probabilities": [
+    0.20207858,
+    0.67264189,
+    0.12527953
+   ]
+  },
+  {
+   "text": "en el pie y tiene mucho dolor y se pone morado",
+   "probabilities": [
+    0.97740757,
+    0.01531003,
+    0.00728241
+   ]
+  },
+  {
+   "text": "tomo matamaleza por equivocacion. le sale mucha saliva y pide ayuda",
+   "probabilities": [
+    0.94271637,
+    0.02603064,
+    0.03125299
+   ]
+  },
+  {
+   "text": "dolor de barriga muy fuerte, ademas no se calma con nádá, desde la madrugada",
+   "probabilities": [
+    0.9763257,
+    0.00617412,
+    0.01750019
+   ]
+  },
+  {
+   "text": "la señora comenta que le sale liquido del óídó, ademas no oye bien de ese lado y pide ayuda",
+   "probabilities": [
+    0.06492198,
+    0.04210083,
+    0.89297719
+   ]
+  },
+  {
+   "text": "solicita certificado medico, ademas que le faltan, vino caminando",
+   "probabilities": [
+    0.18054311,
+    0.66812187,
+    0.15133502
+   ]
+  },
+  {
+   "text": "consulta porque lo mordio un perro, se puso rojo, vino caminando",
+   "probabilities": [
+    0.02150789,
+    0.02042845,
+    0.95806366
+   ]
+  },
+  {
+   "text": "rasguño de gato, en la pierna y pide ayuda",
+   "probabilities": [
+    0.02553777,
+    0.03044771,
+    0.94401451
+   ]
+  },
+  {
+   "text": "el señor manifiesta pide la formula de siempre y de los medicamentos de siempre y pide áyúdá",
+   "probabilities": [
+    0.0210788,
+    0.96175724,
+    0.01716396
+   ]
+  },
+  {
+   "text": "réfíéré diarrea desde ayer, ademas dolor de estomago leve",
+   "probabilities": [
+    0.02742594,
+    0.04552355,
+    0.92705051
+   ]
+  },
+  {
+   "text": "dolor de garganta leve. sin fiebre",
+   "probabilities": [
+    0.0045359,
+    0.99053558,
+    0.00492853
+   ]
+  },
+  {
+   "text": "Paciente refiere muy somnoliento y cúéstá despertarlo, ademas no reconoce a la familia, vive lejos del puesto de salud",
+   "probabilities": [
+    0.97872268,
+    0.01419386,
+    0.00708347
+   ]
+  },
+  {
+   "text": "siente la garganta cerrada, despues de una inyeccion, ademas le broto todo el cuerpo",
+   "probabilities": [
+    0.99149174,
+    0.00504599,
+    0.00346226
+   ]
+  },
+  {
+   "text": "le sale liquido del oido. desde ayer, esta preocupado",
+   "probabilities": [
+    0.10108697,
+    0.06460963,
+    0.8343034
+   ]
+  },
+  {
+   "text": "Paciente refiere la boca se le ve chueca. se le duerme medio cuerpo, ademas no púédé hablar bien desde hace una hora",
+   "probabilities": [
+    0.91083076,
+    0.02132624,
+    0.067843
+   ]
+  },
+  {
+   "text": "Diarrea con colicos, y orina bien, éstá preocupado",
+   "probabilities": [
+    0.01635647,
+    0.01270346,
+    0.97094006
+   ]
+  },
+  {
+   "text": "Consulta porque presion alta y con dolor de cabeza en la nuca y pide ayuda",
+   "probabilities": [
+    0.01455648,
+    0.03153861,
+    0.95390491
+   ]
+  },
+  {
+   "text": "la familia cuenta que control de rutina, se siente bien y pide ayuda",
+   "probabilities": [
+    0.0053608,
+    0.98619627,
+    0.00844293
+   ]
+  },
+  {
+   "text": "refiere solicita certificado medico, ademas para lá familia y pide ayuda",
+   "probabilities": [
+    0.16515166,
+    0.71992676,
+    0.11492158
+   ]
+  },
+  {
+   "text": "consulta porque solicita certificado medico. para la familia, vino caminando",
+   "probabilities": [
+    0.21202972,
+    0.65034602,
+    0.13762426
+   ]
+  },
+  {
+   "text": "consulta porque la boca se le ve chueca, perdio la fuerza en un lado del cúérpó, habla enredado de repente",
+   "probabilities": [
+    0.98393304,
+    0.00639079,
+    0.00967618
+   ]
+  },
+  {
+   "text": "el señor manifiesta dolor en las rodillas. de toda la vida y pide ayuda",
+   "probabilities": [
+    0.02208067,
+    0.95971001,
+    0.01820932
+   ]
+  },
+  {
+   "text": "la familia cuenta que hipertenso, con zumbido en los óídós, vino caminando",
+   "probabilities": [
+    0.03599264,
+    0.05805368,
+    0.90595368
+   ]
+  },
+  {
+   "text": "la familia cuenta que se tomo veneno para las plagas. le arde la garganta, no ha tomado nada",
+   "probabilities": [
+    0.96936779,
+    0.02304321,
+    0.007589
+   ]
+  },
+  {
+   "text": "acude porque manchas blancas en la cara, piel reseca, esta preocupado",
+   "probabilities": [
+    0.03981594,
+    0.94735076,
+    0.0128333
+   ]
+  },
+  {
+   "text": "consulta porque esta confundido, con fiebre",
+   "probabilities": [
+    0.49120347,
+    0.02317301,
+    0.48562352
+   ]
+  },
+  {
+   "text": "El señor manifiesta un poco de dolor de cabeza, despues de trabajar al sol y pide ayuda",
+   "probabilities": [
+    0.03051805,
+    0.93839683,
+    0.03108511
+   ]
+  },
+  {
+   "text": "la señora cóméntá que se le hincho la lengua. le broto todo el cuerpo, vino caminando",
+   "probabilities": [
+    0.97637556,
+    0.01314257,
+    0.01048187
+   ]
+  },
+  {
+   "text": "réfíéré gripa fuerte y hace diez dias, esta preocupado",
+   "probabilities": [
+    0.10135153,
+    0.15590112,
+    0.74274736
+   ]
+  },
+  {
+   "text": "refiere rigidez en el cuello. dolor de cabeza terrible",
+   "probabilities": [
+    0.88930441,
+    0.07974229,
+    0.0309533
+   ]
+  },
+  {
+   "text": "la familia cuenta que la boca se le ve chueca y se le duerme medio cuerpo. no puede hablar bien desde hace una hora, esta preocupado",
+   "probabilities": [
+    0.89282026,
+    0.02705962,
+    0.08012012
+   ]
+  },
+  {
+   "text": "la familia cuenta que la bócá se le ve chueca, ademas se le duerme medio cuerpo, no puede hablar bien desde hace una hora, esta preocupado",
+   "probabilities": [
+    0.87788259,
+    0.03059471,
+    0.0915227
+   ]
+  },
+  {
+   "text": "la familia cuenta que pide la formula de siempre. de los medicamentos de siempre, esta preocupado",
+   "probabilities": [
+    0.0209151,
+    0.9643369,
+    0.014748
+   ]
+  },
+  {
+   "text": "Acude porque diabetica. orina mucho",
+   "probabilities": [
+    0.26920966,
+    0.08445908,
+    0.64633126
+   ]
+  },
+  {
+   "text": "la familia cuenta que la boca se le ve chueca, ademas perdio la fuerza én un lado del cuerpo, habla enredado de repente, no ha tomado nada",
+   "probabilities": [
+    0.97266258,
+    0.0119604,
+    0.01537701
+   ]
+  },
+  {
+   "text": "paciente refiere díárréá con colicos. y orina bien, esta preocupado",
+   "probabilities": [
+    0.02579689,
+    0.0214044,
+    0.95279871
+   ]
+  },
+  {
+   "text": "consulta porque dolor de espalda, al subir lomas, vino caminando",
+   "probabilities": [
+    0.04762687,
+    0.88139483,
+    0.0709783
+   ]
+  },
+  {
+   "text": "",
+   "probabilities": [
+    0.35849464,
+    0.34723359,
+    0.29427177
+   ]
+  },
+  {
+   "text": "¡¡ÑOÑO!! Árbol 123 ñandú",
+   "probabilities": [
+    0.35849464,
+    0.34723359,
+    0.29427177
+   ]
+  }
+ ]
+}
