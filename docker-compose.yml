@@ -1,0 +1,23 @@
+# Local PostgreSQL for development (port 5433: SubastaCampo uses 5432 and 5434).
+services:
+  db:
+    image: postgres:17
+    container_name: triage_backend_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: triage
+      POSTGRES_PASSWORD: triage_dev
+      POSTGRES_DB: triage
+    ports:
+      - "5433:5432"
+    volumes:
+      - triage_backend_pgdata:/var/lib/postgresql/data
+      - ./scripts/create-test-db.sql:/docker-entrypoint-initdb.d/create-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U triage -d triage"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  triage_backend_pgdata:
