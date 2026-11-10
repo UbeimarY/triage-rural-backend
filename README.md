@@ -17,6 +17,9 @@ their outbox here when they reconnect; coordinators follow every synchronized vi
 | POST | `/sync/push` | promoters | Apply a batch of outbox operations, one answer per operation |
 | GET | `/dashboard/summary` | coordinators | Counts by priority and community, pending reviews |
 | GET | `/dashboard/visits` | coordinators | Synchronized visits, most urgent first |
+| GET | `/dashboard/visits.csv` | coordinators | The same list as a spreadsheet, without the symptoms note |
+| GET | `/dashboard/insights?days=14` | coordinators | Visits per day and priority, how often promoters kept the AI's suggestion, sync delay, visits per promoter |
+| GET · POST | `/accounts` | coordinators | List promoters, open a promoter account (no public sign-up) |
 | GET | `/status` · `/healthz` | everyone | Health checks |
 
 Interactive documentation: `/docs` (OpenAPI).
