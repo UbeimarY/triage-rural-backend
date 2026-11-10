@@ -181,3 +181,49 @@ class DashboardVisit(ApiModel):
     version: int
     created_at: datetime
     received_at: datetime
+
+
+class DailyCount(ApiModel):
+    day: str  # ISO date in Colombia's time zone
+    high: int = 0
+    medium: int = 0
+    low: int = 0
+    unclassified: int = 0
+
+
+class AgreementCell(ApiModel):
+    suggested: Priority
+    final: Priority
+    visits: int
+
+
+class Agreement(ApiModel):
+    """How often promoters kept the AI's suggestion, among the ones they reviewed."""
+
+    reviewed: int
+    kept: int
+    raised: int
+    lowered: int
+    cells: list[AgreementCell]
+
+
+class SyncDelay(ApiModel):
+    """Minutes between registering a visit on the phone and the server receiving it."""
+
+    visits: int
+    median_minutes: float | None
+    p90_minutes: float | None
+
+
+class PromoterCount(ApiModel):
+    promoter_name: str
+    visits: int
+    high: int
+
+
+class DashboardInsights(ApiModel):
+    days: int
+    daily: list[DailyCount]
+    agreement: Agreement
+    sync_delay: SyncDelay
+    by_promoter: list[PromoterCount]

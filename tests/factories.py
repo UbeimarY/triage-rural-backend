@@ -70,7 +70,7 @@ def assessment(
         "source": "model",
         "triggeredAlarms": [],
         "reasonCodes": ["MODEL_PREDICTION"],
-        "modelVersion": "triage-text-v1",
+        "modelVersion": "triage-text-v2",
         "elapsedMs": 4,
         "createdAt": now(),
         **overrides,
