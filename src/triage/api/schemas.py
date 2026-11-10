@@ -227,3 +227,28 @@ class DashboardInsights(ApiModel):
     agreement: Agreement
     sync_delay: SyncDelay
     by_promoter: list[PromoterCount]
+
+
+# ---------- Accounts ----------
+
+
+class NewPromoter(ApiModel):
+    email: str = Field(max_length=254, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+    full_name: str = Field(min_length=3, max_length=100)
+    # Given to the promoter in person; long enough to resist guessing offline.
+    password: str = Field(min_length=12, max_length=128)
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, value: object) -> object:
+        return value.strip().lower() if isinstance(value, str) else value
+
+    @field_validator("full_name")
+    @classmethod
+    def strip_name(cls, value: str) -> str:
+        return " ".join(value.split())
+
+
+class AccountOut(UserOut):
+    created_at: datetime
+    visits: int = 0

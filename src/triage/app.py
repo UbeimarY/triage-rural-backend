@@ -13,7 +13,7 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from triage.api import auth, dashboard, sync
+from triage.api import accounts, auth, dashboard, sync
 from triage.api.deps import SessionDep
 from triage.api.errors import install_error_handlers
 from triage.config import Settings, get_settings
@@ -44,6 +44,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(auth.router)
     app.include_router(sync.router)
     app.include_router(dashboard.router)
+    app.include_router(accounts.router)
 
     @app.get("/healthz", response_class=PlainTextResponse, include_in_schema=False)
     async def healthz() -> str:
