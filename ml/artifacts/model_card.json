@@ -1,7 +1,7 @@
 {
   "model": "On-device text classifier for rural triage priority",
-  "version": "triage-text-v1",
-  "algorithm": "TF-IDF (unigrams + bigrams) + multinomial logistic regression",
+  "version": "triage-text-v2",
+  "algorithm": "TF-IDF over negation-aware words, word pairs and four-letter pieces + multinomial logistic regression + temperature scaling",
   "intended_use": "Suggest a priority for visits WITHOUT alarm signs, inside a Web Worker, offline. Alarm-sign rules always take precedence. A health promoter confirms every suggestion.",
   "not_for": "Diagnosis or any real clinical decision. Academic prototype.",
   "training_data": {
@@ -10,123 +10,226 @@
     "train_examples": 2530,
     "test_examples": 830,
     "split": "By scenario: test scenarios never appear in training",
-    "train_scenarios": 253,
-    "test_scenarios": 83
+    "negation_stress_examples": 70,
+    "typo_stress_examples": 830
   },
-  "decision_rule": "high if P(high) >= 0.59, else the likelier of medium and low",
-  "high_threshold_selection": "Highest threshold reaching recall(high) >= 0.95 in 5-fold cross-validation grouped by scenario, on training data only",
-  "vocabulary_size": 1704,
-  "metrics_on_held_out_scenarios": {
-    "model": {
-      "labels": [
-        "high",
-        "medium",
-        "low"
-      ],
-      "confusion_matrix": [
-        [
-          278,
-          12,
-          0
-        ],
-        [
-          0,
-          280,
-          0
-        ],
-        [
-          0,
-          0,
-          260
-        ]
-      ],
-      "recall": {
-        "high": 0.959,
-        "medium": 1.0,
-        "low": 1.0
+  "decision_rule": "high if P(high) >= 0.7, else the likelier of medium and low",
+  "temperature": 0.45,
+  "calibration": {
+    "expected_calibration_error_before": 0.0598,
+    "expected_calibration_error_after": 0.004,
+    "reliability": [
+      {
+        "from": 0.7,
+        "to": 0.8,
+        "count": 1,
+        "confidence": 0.709,
+        "accuracy": 1.0
       },
-      "precision": {
-        "high": 1.0,
-        "medium": 0.959,
-        "low": 1.0
+      {
+        "from": 0.8,
+        "to": 0.9,
+        "count": 5,
+        "confidence": 0.862,
+        "accuracy": 1.0
       },
-      "macro_f1": 0.986
+      {
+        "from": 0.9,
+        "to": 1.0,
+        "count": 824,
+        "confidence": 0.997,
+        "accuracy": 1.0
+      }
+    ]
+  },
+  "vocabulary_size": 3093,
+  "comparison_same_data": {
+    "v1: palabras y pares de palabras": {
+      "held_out_scenarios": {
+        "labels": [
+          "high",
+          "medium",
+          "low"
+        ],
+        "confusion_matrix": [
+          [
+            286,
+            4,
+            0
+          ],
+          [
+            0,
+            280,
+            0
+          ],
+          [
+            0,
+            0,
+            260
+          ]
+        ],
+        "recall": {
+          "high": 0.986,
+          "medium": 1.0,
+          "low": 1.0
+        },
+        "precision": {
+          "high": 1.0,
+          "medium": 0.986,
+          "low": 1.0
+        },
+        "macro_f1": 0.995
+      },
+      "negation_stress_false_high_rate": 0.414,
+      "typo_stress": {
+        "labels": [
+          "high",
+          "medium",
+          "low"
+        ],
+        "confusion_matrix": [
+          [
+            277,
+            10,
+            3
+          ],
+          [
+            0,
+            279,
+            1
+          ],
+          [
+            0,
+            0,
+            260
+          ]
+        ],
+        "recall": {
+          "high": 0.955,
+          "medium": 0.996,
+          "low": 1.0
+        },
+        "precision": {
+          "high": 1.0,
+          "medium": 0.965,
+          "low": 0.985
+        },
+        "macro_f1": 0.983
+      }
     },
-    "baseline_majority_class": {
-      "labels": [
-        "high",
-        "medium",
-        "low"
-      ],
-      "confusion_matrix": [
-        [
-          290,
-          0,
-          0
+    "v2: negación + fragmentos de letras + temperatura": {
+      "held_out_scenarios": {
+        "labels": [
+          "high",
+          "medium",
+          "low"
         ],
-        [
-          280,
-          0,
-          0
+        "confusion_matrix": [
+          [
+            290,
+            0,
+            0
+          ],
+          [
+            0,
+            280,
+            0
+          ],
+          [
+            0,
+            0,
+            260
+          ]
         ],
-        [
-          260,
-          0,
-          0
-        ]
-      ],
-      "recall": {
-        "high": 1.0,
-        "medium": 0.0,
-        "low": 0.0
+        "recall": {
+          "high": 1.0,
+          "medium": 1.0,
+          "low": 1.0
+        },
+        "precision": {
+          "high": 1.0,
+          "medium": 1.0,
+          "low": 1.0
+        },
+        "macro_f1": 1.0
       },
-      "precision": {
-        "high": 0.349,
-        "medium": 0.0,
-        "low": 0.0
-      },
-      "macro_f1": 0.173
-    },
-    "baseline_rules_only": {
-      "labels": [
-        "high",
-        "medium",
-        "low"
-      ],
-      "confusion_matrix": [
-        [
-          0,
-          290,
-          0
+      "negation_stress_false_high_rate": 0.057,
+      "typo_stress": {
+        "labels": [
+          "high",
+          "medium",
+          "low"
         ],
-        [
-          0,
-          280,
-          0
+        "confusion_matrix": [
+          [
+            290,
+            0,
+            0
+          ],
+          [
+            0,
+            280,
+            0
+          ],
+          [
+            0,
+            0,
+            260
+          ]
         ],
-        [
-          0,
-          260,
-          0
-        ]
-      ],
-      "recall": {
-        "high": 0.0,
-        "medium": 1.0,
-        "low": 0.0
-      },
-      "precision": {
-        "high": 0.0,
-        "medium": 0.337,
-        "low": 0.0
-      },
-      "macro_f1": 0.168
+        "recall": {
+          "high": 1.0,
+          "medium": 1.0,
+          "low": 1.0
+        },
+        "precision": {
+          "high": 1.0,
+          "medium": 1.0,
+          "low": 1.0
+        },
+        "macro_f1": 1.0
+      }
     }
+  },
+  "baseline_majority_class": {
+    "labels": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "confusion_matrix": [
+      [
+        290,
+        0,
+        0
+      ],
+      [
+        280,
+        0,
+        0
+      ],
+      [
+        260,
+        0,
+        0
+      ]
+    ],
+    "recall": {
+      "high": 1.0,
+      "medium": 0.0,
+      "low": 0.0
+    },
+    "precision": {
+      "high": 0.349,
+      "medium": 0.0,
+      "low": 0.0
+    },
+    "macro_f1": 0.173
   },
   "limitations": [
     "Synthetic data written by the developer: real promoter notes will differ.",
-    "Not validated by health professionals; the label scale is not an official triage scale.",
-    "Bag-of-words model: it can miss negations beyond bigrams ('no tiene ... fiebre').",
+    "Not validated by health professionals; the scale is not an official triage scale.",
+    "Negation is handled by rules (a word list and a four-word scope), not by understanding: unusual phrasings can still fool it.",
     "Unknown words are ignored: very unusual descriptions fall back to the priors."
   ],
   "sklearn_version": "1.9.1"

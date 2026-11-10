@@ -272,6 +272,35 @@ SUFFIXES = [
     ", vino caminando",
 ]
 CONNECTORS = [", ", " y ", ", ademas ", ". "]
+
+# Negated mentions of alarm-like findings, common in real notes ("sin fiebre", "niega
+# dolor de pecho"). Added to medium and low cases so the model learns that a negated
+# finding is not the finding.
+NEGATED_FINDINGS = [
+    "no tiene dolor en el pecho",
+    "sin dificultad para respirar",
+    "niega convulsiones",
+    "no se ha desmayado",
+    "no tiene sangrado",
+    "sin fiebre alta",
+    "no tiene falta de aire",
+    "niega dolor de pecho",
+    "no ha vomitado",
+    "sin perdida de fuerza",
+]
+
+# Stress tests only: negations written in ways never seen in training, built from the
+# vocabulary of the urgent families ("rigidez en el cuello" alone is meningitis).
+STRESS_NEGATIONS = [
+    "sin rigidez en el cuello",
+    "no tiene la boca torcida",
+    "no lo mordio ninguna culebra",
+    "niega vision borrosa",
+    "no esta confundido",
+    "sin dolor de barriga insoportable",
+    "no se le hincharon los labios",
+    "nunca ha perdido la fuerza en un lado del cuerpo",
+]
 ACCENTS = str.maketrans({"a": "á", "e": "é", "i": "í", "o": "ó", "u": "ú"})
 
 
@@ -309,6 +338,24 @@ def _render(clues: tuple[str, ...], rng: random.Random) -> str:
     return text
 
 
+def add_typos(text: str, rng: random.Random, count: int = 2) -> str:
+    """Promoters type fast on small screens: drop, swap or change a letter in long words."""
+    words = text.split()
+    candidates = [i for i, word in enumerate(words) if len(word) >= 5 and word.isalpha()]
+    for i in rng.sample(candidates, min(count, len(candidates))):
+        word = list(words[i])
+        k = rng.randrange(1, len(word) - 1)
+        kind = rng.choice(("drop", "swap", "change"))
+        if kind == "drop":
+            del word[k]
+        elif kind == "swap":
+            word[k], word[k + 1] = word[k + 1], word[k]
+        else:
+            word[k] = rng.choice("aeiourlnstcv")
+        words[i] = "".join(word)
+    return " ".join(words)
+
+
 def generate(scenarios_per_family: int = 12, variants: int = 10, seed: int = 42) -> list[Example]:
     """Same seed, same dataset: training is fully reproducible."""
     rng = random.Random(seed)
@@ -320,6 +367,8 @@ def generate(scenarios_per_family: int = 12, variants: int = 10, seed: int = 42)
                 seen: set[str] = set()
                 for _ in range(variants * 4):
                     text = _render(clues, rng)
+                    if label != "high" and rng.random() < 0.35:
+                        text += rng.choice(CONNECTORS) + rng.choice(NEGATED_FINDINGS)
                     if text not in seen:
                         seen.add(text)
                         examples.append(Example(text, label, family, scenario))
@@ -342,3 +391,28 @@ def split_by_scenario(
     train = [e for e in examples if e.scenario not in test_scenarios]
     test = [e for e in examples if e.scenario in test_scenarios]
     return train, test
+
+
+def negation_stress(seed: int = 11) -> list[Example]:
+    """Short notes whose main finding is an urgent clue that is DENIED ("niega rigidez en
+    el cuello"). None of them is urgent, so none should become "high". Phrasings are built
+    from the urgent families' own clues, with negators and openings never paired in training.
+    """
+    rng = random.Random(seed)
+    openings = ["", "control de rutina, ", "viene por formula, ", "se siente bien, "]
+    negators = ["niega", "no tiene", "sin", "no presenta", "nunca ha tenido"]
+    examples = []
+    for family, components in FAMILIES["high"].items():
+        for component in components:
+            for clue in component:
+                if clue.startswith(("no ", "sin ")):
+                    continue  # already negative wording ("no puede hablar"): skip
+                text = f"{rng.choice(openings)}{rng.choice(negators)} {clue}"
+                examples.append(Example(text, "low", family, f"negation/{family}"))
+    return examples
+
+
+def typo_stress(test: list[Example], seed: int = 13) -> list[Example]:
+    """Held-out cases with two typos: urgent cases must still be found."""
+    rng = random.Random(seed)
+    return [Example(add_typos(e.text, rng), e.label, e.family, e.scenario) for e in test]
