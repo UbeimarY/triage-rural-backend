@@ -28,6 +28,9 @@ from triage.db.models import Assessment, Encounter, Patient, User
 
 # Days are counted as the promoters live them, not in UTC.
 LOCAL_ZONE = "America/Bogota"
+# Longest period the insights cover. Query() already refuses more; the loop that
+# fills empty days checks it again so its size never depends on the request alone.
+MAX_INSIGHT_DAYS = 90
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
@@ -159,7 +162,9 @@ def _cell(value: object) -> str:
 
 @router.get("/insights")
 async def insights(
-    _user: CoordinatorUser, session: SessionDep, days: int = Query(default=14, ge=1, le=90)
+    _user: CoordinatorUser,
+    session: SessionDep,
+    days: int = Query(default=14, ge=1, le=MAX_INSIGHT_DAYS),
 ) -> DashboardInsights:
     today = datetime.now(ZoneInfo(LOCAL_ZONE)).date()
     first_day = today - timedelta(days=days - 1)
@@ -193,6 +198,8 @@ async def _daily(
             .group_by(local_day, _effective)
         )
     ).all()
+    if not 1 <= days <= MAX_INSIGHT_DAYS:
+        raise ValueError(f"days must be between 1 and {MAX_INSIGHT_DAYS}")
     by_day = {first_day + timedelta(days=i): DailyCount(day="") for i in range(days)}
     for day, priority, total in rows:
         if day in by_day:

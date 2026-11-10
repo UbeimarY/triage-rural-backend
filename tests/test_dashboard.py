@@ -176,3 +176,15 @@ async def test_promoters_cannot_read_insights_or_export(
 
     assert (await api.get("/dashboard/insights", headers=headers)).status_code == 403
     assert (await api.get("/dashboard/visits.csv", headers=headers)).status_code == 403
+
+
+async def test_insights_refuse_periods_longer_than_ninety_days(
+    api: httpx.AsyncClient, make_user: UserFactory
+) -> None:
+    coordinator = await make_user("jefe@test.co", UserRole.COORDINATOR)
+
+    response = await api.get(
+        "/dashboard/insights?days=10000", headers={"Authorization": f"Bearer {coordinator}"}
+    )
+
+    assert response.status_code == 422
