@@ -44,13 +44,27 @@ uv run python -m ml.train   # writes ml/artifacts/
 
 - `ml/dataset.py`: synthetic, documented dataset with scenario families; train/test split **by
   scenario**, so test descriptions are combinations never seen in training.
-- `ml/train.py`: TF-IDF + logistic regression, decision threshold chosen by grouped
-  cross-validation for **recall(high) ≥ 0.95**, metrics against two baselines.
+- `ml/features.py`: the text features (version 2), reproduced in TypeScript by the app:
+  - **Denial:** "sin", "niega", "nunca", "ni" and a "no" before a verb of presence
+    ("no tiene", "no presenta", "no se ha…") mark the next content words as denied, until
+    the clause ends. In "no puede hablar" the "no" describes the symptom and is kept.
+  - **Typos:** four-letter pieces of every affirmed word, so "fievre" still looks like "fiebre".
+  - **Positions:** every word keeps where it is in the text, so the app highlights it.
+- `ml/train.py`: TF-IDF + logistic regression + **temperature scaling**; decision threshold
+  chosen by grouped cross-validation for **recall(high) ≥ 0.95**; v2 is compared with the v1
+  method **trained on the same data**.
 - `ml/artifacts/`: exported model (copied to the Angular app), **model card** with metrics and
   limitations, and equivalence fixtures the TypeScript tests must reproduce.
 
-Held-out results: recall high 0.959, macro F1 0.986 (rules-only baseline: 0.168). The data is
-synthetic, so these numbers do not predict real-world performance; see the model card.
+| Same data, held-out | v1: words + word pairs | **v2** |
+|---|---|---|
+| Recall of urgent cases, new scenarios | 0.986 | **1.000** |
+| Recall of urgent cases, with typos | 0.955 | **1.000** |
+| Denied urgent findings wrongly called urgent | 41.4 % | **5.7 %** |
+| Expected calibration error | 0.060 | **0.004** |
+
+The data is synthetic, so these numbers do not predict real-world performance; denial is
+handled by rules, not understanding. See the model card for the limitations.
 
 ## Privacy (Ley 1581 de 2012)
 
